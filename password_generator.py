@@ -1,2 +1,15 @@
+import string
+
 def generate():
     return "talking to password_generator"
+
+# complicated test string to test
+test_str = "test123!_ hiXYZ"
+
+# test method to check for multipliers
+def multiplier(test_str):
+    alpha, number, whitespace, special = False, False, False, False
+    for i in test_str:
+        if i in string.ascii_lowercase:
+            alpha = True
+            print(alpha)
