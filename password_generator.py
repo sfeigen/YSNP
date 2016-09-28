@@ -3,15 +3,15 @@ import re
 import string
 
 rand_lower = choice(string.ascii_lowercase)
-rand_upper = choice(string.ascii_uppercase)
+rand_alpha = choice(string.ascii_letters)
 rand_num = choice(string.digits)
 rand_whitespace = choice(string.whitespace)
 rand_special = choice(string.punctuation)
 
-print(rand_lower, rand_upper, rand_num, rand_whitespace, rand_special)
+print(rand_alpha, rand_num, rand_whitespace, rand_special)
 
 # complicated test string to test
-test_str = "immastring235235morestring"
+test_str = "immastring235!s!235morestring"
 test_str = re.sub(r'[a-z][a-z]*[a-z][a-z]', rand_lower, test_str)
 
 # helper method to check for multipliers
@@ -40,9 +40,32 @@ def multiplier(test_str):
 def pass_val(test_str):
     return len(test_str) * multiplier(test_str)[0]
 
-#given range 11-49, try to beef up PW
+#given range 11-49, try to beef up PW if redundant
 def modifier(test_str):
-    #regex to figure out if multiplier can be upgraded
+    print("Modifying string...")
+    #alpha = [0], number = [1], whitespace = [2], special = [3]
+    count = multiplier(test_str)[1]
+
+    while pass_val(test_str) < 50:
+        #number redundant, swap
+        if count[1] >= 2 and count[0] == 0:
+            test_str = re.subn(r'[0-9]', rand_alpha, test_str, 1)[0]
+        if count[1] >= 2 and count[2] == 0:
+            test_str = re.subn(r'[0-9]', rand_whitespace, test_str, 1)[0]
+        if count[1] >= 2 and count[3] == 0:
+            test_str = re.subn(r'[0-9]', rand_special, test_str, 1)[0]
+
+        #special redundant, swap
+        if count[3] >= 2 and count[0] == 0:
+            test_str = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_alpha, test_str, 1)[0]
+        if count[3] >= 2 and count[1] == 0:
+            test_str = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_num, test_str, 1)[0]
+        if count[3] >= 2 and count[2] == 0:
+            test_str = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_whitespace, test_str, 1)[0]
+
+        if pass_val(test_str) < 50 and len(test_str) < 13:
+            difference = 13 - len(test_str)
+            test_str = test_str + "1*a " + (difference*choice(string.digits))
     return test_str
 
 def value_router(test_str):
@@ -51,8 +74,7 @@ def value_router(test_str):
         return test_str
 
     if pass_val(test_str) < 50 and pass_val(test_str) > 10:
-        print("Needs some work!")
-        modifier(test_str)
+        test_str = modifier(test_str)
         return test_str
 
     if pass_val(test_str) <= 10:
