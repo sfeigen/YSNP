@@ -2,24 +2,27 @@ import tweepy
 from config import *
 from password_generator import *
 
+import json
+from tweepy import Stream
+from tweepy.streaming import StreamListener
+
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
 API = tweepy.API(auth)
 
-multiplier_val = multiplier(test_str)
-test_str = value_router(test_str)
-
 class listener(StreamListener):
 
     def on_data(self, data):
-        text = json.loads(data)['text'][15:]  
+        test_str = json.loads(data)['text'][17:]  
         user = json.loads(data)['user']['screen_name']
 
-        #logic goes here
-        new_password = generate_password()
-        tweet = "@" + user + " " + new_password
+        #go to p/w gen and run alg
+        multiplier_val = multiplier(test_str)
+        response = value_router(test_str)
 
-        tweetBack(tweet)
+        #generate tweet based upon results
+        tweet = "@" + user + " " + response
+        api.update_status(tweet)
 
         return(True)
 
