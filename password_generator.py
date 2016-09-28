@@ -1,10 +1,18 @@
+from random import choice
+import re
 import string
 
-def generate():
-    return "talking to password_generator"
+rand_lower = choice(string.ascii_lowercase)
+rand_upper = choice(string.ascii_uppercase)
+rand_num = choice(string.digits)
+rand_whitespace = choice(string.whitespace)
+rand_special = choice(string.punctuation)
+
+print(rand_lower, rand_upper, rand_num, rand_whitespace, rand_special)
 
 # complicated test string to test
-test_str = "aaa"
+test_str = "immastring235235morestring"
+test_str = re.sub(r'[a-z][a-z]*[a-z][a-z]', rand_lower, test_str)
 
 # helper method to check for multipliers
 def multiplier(test_str):
