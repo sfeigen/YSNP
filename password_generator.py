@@ -6,7 +6,7 @@ def generate():
 # complicated test string to test
 test_str = "! a1"
 
-# test method to check for multipliers
+# helper method to check for multipliers
 def multiplier(test_str):
     alpha, number, whitespace, special = False, False, False, False
     for i in test_str:
@@ -19,7 +19,20 @@ def multiplier(test_str):
         if i in string.punctuation:
             special = True
     return alpha + number + whitespace + special
-            
-def password_value(test_str):
+
+# check value of a given string            
+def pass_val(test_str):
     return len(test_str) * multiplier(test_str)
+
+def modifier(test_str):
+    #regex to figure out if multiplier can be upgraded
     
+if pass_val(test_str) >= 50:
+    return test_str
+
+if pass_val(test_str) < 50 and if pass_val > 10:
+    modifier(test_str)
+    return test_str
+
+if pass_val(test_str) < 10:
+    return test_str = "This shall not pass... try a strong password."
