@@ -32,18 +32,21 @@ def multiplier(test_str):
 def pass_val(test_str):
     return len(test_str) * multiplier(test_str)[0]
 
+#given range 11-49, try to beef up PW
 def modifier(test_str):
     #regex to figure out if multiplier can be upgraded
     return test_str
 
 def value_router(test_str):
     if pass_val(test_str) >= 50:
+        print("Pass!")
         return test_str
 
     if pass_val(test_str) < 50 and pass_val(test_str) > 10:
+        print("Needs some work!")
         modifier(test_str)
         return test_str
 
-    if pass_val(test_str) < 10:
+    if pass_val(test_str) <= 10:
         test_str = "This shall not pass... try a stronger password."
         return test_str
