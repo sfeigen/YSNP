@@ -13,6 +13,7 @@ API = tweepy.API(auth)
 class listener(StreamListener):
 
     def on_data(self, data):
+        #grab string after name
         test_str = json.loads(data)['text'][17:]  
         user = json.loads(data)['user']['screen_name']
 
@@ -22,7 +23,7 @@ class listener(StreamListener):
 
         #generate tweet based upon results
         tweet = "@" + user + " " + response
-        api.update_status(tweet)
+        API.update_status(tweet)
 
         return(True)
 
@@ -33,6 +34,9 @@ class listener(StreamListener):
     def on_error(self, status):
         print status
         
+#track self
+twitterStream = Stream(auth, listener())
+twitterStream.filter(track=['@nopasarassenior'], async=True)
 
 # payload = generate()
 # API.update_status(payload)

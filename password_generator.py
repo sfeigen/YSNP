@@ -8,8 +8,6 @@ rand_num = choice(string.digits)
 rand_whitespace = choice(string.whitespace)
 rand_special = choice(string.punctuation)
 
-print(rand_alpha, rand_num, rand_whitespace, rand_special)
-
 # complicated test string to test
 test_str = "immastring235!s!235morestring"
 test_str = re.sub(r'[a-z][a-z]*[a-z][a-z]', rand_lower, test_str)
@@ -73,14 +71,14 @@ def modifier(test_str):
 def value_router(test_str):
     if pass_val(test_str) >= 50:
         print("Pass!")
-        test_str = test_str + " <- passed with a score of: ", pass_val(test_str)
+        # test_str = test_str + " <- passed with a score of: ", pass_val(test_str)
         return test_str
 
     if pass_val(test_str) < 50 and pass_val(test_str) > 10:
         test_str = modifier(test_str)
-        test_str = test_str + " <- modified password with a score of: ", pass_val(test_str)
+        # test_str = test_str + " <- modified password with a score of: ", pass_val(test_str)
         return test_str
 
     if pass_val(test_str) <= 10:
-        test_str = test_str + " <- this shall not pass... the value is: ", pass_val(test_str)
+        # test_str = test_str + " <- this shall not pass... the value is: ", pass_val(test_str)
         return test_str
