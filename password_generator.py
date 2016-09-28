@@ -20,4 +20,6 @@ def multiplier(test_str):
             special = True
     return alpha + number + whitespace + special
             
-        
+def password_value(test_str):
+    return len(test_str) * multiplier(test_str)
+    
