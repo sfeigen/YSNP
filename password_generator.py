@@ -9,14 +9,17 @@ rand_whitespace = choice(string.whitespace)
 rand_special = choice(string.punctuation)
 
 # complicated test string to test
-test_str = "immastring235!s!235morestring"
-test_str = re.sub(r'[a-z][a-z]*[a-z][a-z]', rand_lower, test_str)
+password = "immastring235!s!235morestring"
+password = re.sub(r'[a-z][a-z]*[a-z][a-z]', rand_lower, password)
 
 # helper method to check for multipliers
-def multiplier(test_str):
+def multiplier(password):
+    #reset for update function
+    multiplier = 0
+
     alpha_count, number_count, whitespace_count, special_count = 0, 0, 0, 0
     alpha, number, whitespace, special = False, False, False, False
-    for i in test_str:
+    for i in password:
         if i in string.ascii_letters:
             alpha = True
             alpha_count += 1
@@ -35,50 +38,47 @@ def multiplier(test_str):
     return multiplier, count
 
 # check value of a given string            
-def pass_val(test_str):
-    return len(test_str) * multiplier(test_str)[0]
+def pass_val(password):
+    return len(password) * multiplier(password)[0]
 
 #given range 11-49, try to beef up PW if redundant
-def modifier(test_str):
+def modifier(password):
     print("Modifying string...")
     #alpha = [0], number = [1], whitespace = [2], special = [3]
-    count = multiplier(test_str)[1]
+    count = multiplier(password)[1]
 
-    while pass_val(test_str) < 50:
+    while pass_val(password) < 50:
         #number redundant, swap
-        if count[1] >= 2 and count[0] == 0 and pass_val(test_str) < 50:
-            test_str = re.subn(r'[0-9]', rand_alpha, test_str, 1)[0]
-        if count[1] >= 2 and count[2] == 0 and pass_val(test_str) < 50:
-            test_str = re.subn(r'[0-9]', rand_whitespace, test_str, 1)[0]
-        if count[1] >= 2 and count[3] == 0 and pass_val(test_str) < 50:
-            test_str = re.subn(r'[0-9]', rand_special, test_str, 1)[0]
+        if count[1] >= 2 and count[0] == 0 and pass_val(password) < 50:
+            password = re.subn(r'[0-9]', rand_alpha, password, 1)[0]
+        if count[1] >= 2 and count[2] == 0 and pass_val(password) < 50:
+            password = re.subn(r'[0-9]', rand_whitespace, password, 1)[0]
+        if count[1] >= 2 and count[3] == 0 and pass_val(password) < 50:
+            password = re.subn(r'[0-9]', rand_special, password, 1)[0]
 
         #special redundant, swap
-        if count[3] >= 2 and count[0] == 0 and pass_val(test_str) < 50:
-            test_str = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_alpha, test_str, 1)[0]
-        if count[3] >= 2 and count[1] == 0 and pass_val(test_str) < 50:
-            test_str = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_num, test_str, 1)[0]
-        if count[3] >= 2 and count[2] == 0 and pass_val(test_str) < 50:
-            test_str = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_whitespace, test_str, 1)[0]
+        if count[3] >= 2 and count[0] == 0 and pass_val(password) < 50:
+            password = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_alpha, password, 1)[0]
+        if count[3] >= 2 and count[1] == 0 and pass_val(password) < 50:
+            password = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_num, password, 1)[0]
+        if count[3] >= 2 and count[2] == 0 and pass_val(password) < 50:
+            password = re.subn(r'([\.\\\+\*\?\[\^\]\$\(\)\{\}\!\<\>\|\:\-])', rand_whitespace, password, 1)[0]
 
-        if pass_val(test_str) < 50 and len(test_str) < 13:
-            difference = 13 - len(test_str)
-            test_str = test_str + "1*a " + (difference*choice(string.digits))
+        if pass_val(password) < 50 and len(password) < 13:
+            difference = 13 - len(password)
+            password = password + "1*a " + (difference*choice(string.digits))
         
-        print("Modified string: ", test_str, pass_val(test_str))
-    return test_str
+        print("Modified string: ", password, pass_val(password))
+        return password
 
-def value_router(test_str):
-    if pass_val(test_str) >= 50:
+def value_router(password):
+    if pass_val(password) >= 50:
         print("Pass!")
-        message = "You passed with a score of: ", pass_val(test_str)
-        return test_str, message
+        return password
 
-    if pass_val(test_str) < 50 and pass_val(test_str) > 10:
-        test_str = modifier(test_str)
-        message = "Modified this password with a score of: ", pass_val(test_str)
-        return test_str, message
+    if pass_val(password) < 50 and pass_val(password) > 10:
+        password = modifier(password)
+        return password
 
-    if pass_val(test_str) <= 10:
-        test_str = "This shall not pass... the value is: ", pass_val(test_str)
-        return test_str
+    if pass_val(password) <= 10:
+        return password

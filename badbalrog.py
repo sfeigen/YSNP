@@ -14,15 +14,23 @@ class listener(StreamListener):
 
     def on_data(self, data):
         #grab string after name
-        test_str = json.loads(data)['text'][17:]  
+        password = json.loads(data)['text'][17:]  
         user = json.loads(data)['user']['screen_name']
-
+        
         #go to p/w gen and run alg
-        multiplier_val = multiplier(test_str)
-        response, message = value_router(test_str)
+        multiplier_val = multiplier(password)
+        response = value_router(password)
+
+        #update score
+        strength = len(response) * multiplier(response)[0]
+
+        if strength < 10:
+            pass_comment = " ... this shall not pass...\n Password: "
+        else:
+            pass_comment = "\n Password is: "
 
         #generate tweet based upon results
-        tweet = "@" + user + " ", message, " ", response
+        tweet = "@" + user + pass_comment + response + "\n With a Strength of: " + str(strength)
         API.update_status(tweet)
 
         return(True)
