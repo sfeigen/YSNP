@@ -19,10 +19,10 @@ class listener(StreamListener):
 
         #go to p/w gen and run alg
         multiplier_val = multiplier(test_str)
-        response = value_router(test_str)
+        response, message = value_router(test_str)
 
         #generate tweet based upon results
-        tweet = "@" + user + " " + response
+        tweet = "@" + user + " ", message, " ", response
         API.update_status(tweet)
 
         return(True)

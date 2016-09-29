@@ -71,14 +71,14 @@ def modifier(test_str):
 def value_router(test_str):
     if pass_val(test_str) >= 50:
         print("Pass!")
-        # test_str = test_str + " <- passed with a score of: ", pass_val(test_str)
-        return test_str
+        message = "You passed with a score of: ", pass_val(test_str)
+        return test_str, message
 
     if pass_val(test_str) < 50 and pass_val(test_str) > 10:
         test_str = modifier(test_str)
-        # test_str = test_str + " <- modified password with a score of: ", pass_val(test_str)
-        return test_str
+        message = "Modified this password with a score of: ", pass_val(test_str)
+        return test_str, message
 
     if pass_val(test_str) <= 10:
-        # test_str = test_str + " <- this shall not pass... the value is: ", pass_val(test_str)
+        test_str = "This shall not pass... the value is: ", pass_val(test_str)
         return test_str
